@@ -15,11 +15,16 @@ jobs:
           node-version: 20.10.0
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Set up bun
+        uses: oven-sh/setup-bun@v2
+      - name: Install dependencies
+        run: bun install --frozen-lockfile
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
-          build: yarn run build
-          start: yarn start
+          install: false
+          build: bun run build
+          start: bun run start
         env:
           CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -35,3 +40,4 @@ jobs:
           name: cypress-videos
           path: cypress/videos
           if-no-files-found: ignore
+
